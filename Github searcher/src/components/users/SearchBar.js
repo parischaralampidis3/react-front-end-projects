@@ -1,9 +1,14 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export class SearchBar extends Component {
   //initiate and attach state at the input text
   state = {
     text: "",
+  };
+
+  static propTypes = {
+    searchUsers: PropTypes.func.isRequired,
   };
 
   //set a function for on change method, that sets the state for handling change value when user types

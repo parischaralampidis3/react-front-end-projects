@@ -23,12 +23,25 @@ class App extends Component {
     //once we get a response, we'll map the API results to our props
     //console.log(res.data);
   }
+  //define a function for searching users
+  searchUsers = async (text) => {
+    this.setState({ loading: true });
+    //this makes a request to github api for fetching users
+    const res = await axios.get(
+      `https://api.github.com/search/users?q=${text}`
+    );
+
+    //once we fetch the data we have setState() to re-set the state to false and get the results
+    this.setState({ users: res.data.items, loading: false });
+    // console.log(text);
+  };
 
   render() {
     return (
       <div>
         <Navbar />
-        <SearchBar />
+
+        <SearchBar searchUsers={this.searchUsers} />
 
         <Users loading={this.state.loading} users={this.state.users} />
       </div>
