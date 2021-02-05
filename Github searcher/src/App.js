@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Navbar from "./components/layouts/Navbar";
 import Users from "./components/users/Users";
 import SearchBar from "./components/users/SearchBar";
+import Alert from "./components/layouts/Alert"
 import axios from "axios";
 
 class App extends Component {
@@ -10,6 +11,8 @@ class App extends Component {
     users: [],
     //set loading for fetching data.loading is set to false when we don't fetch
     loading: false,
+    //i added a state for alert 
+    alert: null
   };
 
   async componentDidMount() {
@@ -23,6 +26,8 @@ class App extends Component {
     //once we get a response, we'll map the API results to our props
     //console.log(res.data);
   }
+
+
   //define a function for searching users
   searchUsers = async (text) => {
     this.setState({ loading: true });
@@ -35,15 +40,41 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
     // console.log(text);
   };
+  //define a function method for clearing users
+
+  clearUsersResults = () => this.setState({ users: [], loading: false });
+
+
+  //define a function for set alert 
+
+  
+  setAlert = (msg,type) =>{
+    this.setState({alert:{msg,type}})
+
+    //set timeout for the message appearance 
+    setTimeout(()=>{ 
+      this.setState ({ alert: null})}, 3000);
+
+  }
 
   render() {
+    //destructure props
+    const { users, loading } = this.state;
+
     return (
       <div>
         <Navbar />
+        <div className ="container">
+          
+       <Alert alert = {this.state.alert}/>
+        <SearchBar
+          searchUsers={this.searchUsers}
+          clearUsersResults={this.clearUsersResults}
+          setAlert = {this.setAlert}
+        />
 
-        <SearchBar searchUsers={this.searchUsers} />
-
-        <Users loading={this.state.loading} users={this.state.users} />
+        <Users loading={loading} users={users} />
+      </div>
       </div>
     );
   }
