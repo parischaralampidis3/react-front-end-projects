@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 //create a stateless component because we pass props and we ane not in need for tracking changes from state
 export class Navbar extends Component {
   //default props ensure that our information is secure in case of fallback
@@ -22,6 +23,14 @@ export class Navbar extends Component {
             <i className={this.props.icon} />
             {this.props.title}
           </h1>
+          <ul>
+            <li >
+              <Link className="text-light" to="/">Home</Link>
+            </li>
+          <li>
+            <Link className="text-light" to ="/about">About</Link>
+          </li>
+          </ul>
         </div>
       </nav>
     );
