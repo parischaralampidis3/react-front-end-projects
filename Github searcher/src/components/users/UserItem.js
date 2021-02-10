@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import {Link} from 'react-router-dom';
 export class UserItem extends Component {
   render() {
     //deconstruct the values
@@ -15,9 +15,11 @@ export class UserItem extends Component {
         <h3>{login}</h3>
 
         <div>
+          {/* 
           <a href={html_url} className='btn btn-dark btn-sm my-1'>
             more
-          </a>
+          </a>*/}
+          <Link to = {`/user/${login}`} className='btn btn-dark btn-sm my-1'>more</Link>
         </div>
       </div>
     );

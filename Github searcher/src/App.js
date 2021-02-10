@@ -2,6 +2,7 @@ import React, { Fragment,Component } from "react";
 import{ BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Navbar from "./components/layouts/Navbar";
 import Users from "./components/users/Users";
+import User from "./components/users/User"
 import SearchBar from "./components/users/SearchBar";
 import About from "./components/pages/About"
 import Alert from "./components/layouts/Alert"
@@ -11,6 +12,7 @@ class App extends Component {
   //state declares an empty array where
   state = {
     users: [],
+    user: {},
     //set loading for fetching data.loading is set to false when we don't fetch
     loading: false,
     //i added a state for alert 
@@ -42,9 +44,26 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
     // console.log(text);
   };
+
+  //Get a single github user
+
+  getUser = async( username)=>{
+    this.setState({ loading: true });
+     //this makes a request to github api for fetching users
+     const res = await axios.get(
+      `https://api.github.com/users/${username}`
+    );
+
+    //once we fetch the data we have setState() to re-set the state to false and get the results
+    this.setState({ user: res.data, loading: false });
+
+
+  }
+
   //define a function method for clearing users
 
   clearUsersResults = () => this.setState({ users: [], loading: false });
+
 
 
   //define a function for set alert 
@@ -61,7 +80,7 @@ class App extends Component {
 
   render() {
     //destructure props
-    const { users, loading } = this.state;
+    const { users,user, loading } = this.state;
 
     return (
       <Router>
@@ -83,6 +102,10 @@ class App extends Component {
          )} />
 
          <Route exact path = "/about" component = {About} />
+
+         <Route exact path = "/user/:login" render = {props =>(
+           <User {...props} getUser = {this.getUser} user = {user} loading = {loading}/>
+         )}/>
        </Switch>
       </div>
       </div>
